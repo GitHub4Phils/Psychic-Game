@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Psychic</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+  </head>
+  <body>
+    
+    <h1 align="center">The Psychic Game</h1>
+
+    <div>
+      <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col" colspan="3" align="center"><h3>Guess what letter I'm thinking of:</h3></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"></th>
+          <th scope="col">Your Guess</th>
+          <th scope="col">My letter</th>
+        </tr>
+        <tr>
+          <th scope="row"></th>
+          <td><span id="uG"></span></td>
+          <td><span id="cG"></span></td>
+        </tr>
+        <!-- show history guesses -->
+        <tr>
+          <th scope="row"></th>
+          <td><span id="u"></span></td>
+          <td><span id="c"></span></td>
+        </tr>
+
+        <tr>
+          <th scope="row"></th>
+          <td>Guesses Left:</td>
+          <td><span id="count"></span></td>
+        </tr>
+
+        <tr>
+          <th scope="row"></th>
+          <td>Wins:</td>
+          <td><span id="w"></span></td>
+        </tr>
+        <tr>
+          <th scope="row"></th>
+          <td>Losses:</td>
+          <td><span id="l"></span></td>
+        </tr>
+
+        <tr>
+          <th scope="row"></th>
+          <td>Round:</td>
+          <td><span id="r"></span></td>
+        </tr>
+
+
+      </tbody>
+    </table>
+  </div>
+
+
+
+    <script>
+
+      // Array of Letters
+      var myLetters = ["z", "v", "x", "r", "w","h","c","r","g","a","r","k","j","q","o","p"];
+      var round=1;
+      var wins=0;
+      var losses=0;
+      var guesses=10;
+      var uList="";
+      var cList="";
+      
+        function myKeyPress(e){
+          var keynum;
+
+          if(window.event) { // IE                    
+            keynum = e.keyCode;
+          } else if(e.which){ // Netscape/Firefox/Opera                   
+            keynum = e.which;
+          }
+
+          //alert(String.fromCharCode(keynum));
+        }
+
+
+          // document.onkeypress = function(evt) {
+          // evt = evt || window.event;
+          // var charCode = evt.keyCode || evt.which;
+          // var charStr = String.fromCharCode(charCode);
+          // document.write(" " + charStr);
+
+
+          function makeid() {
+            var text = "";
+            //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < 1; i++){
+              text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+
+            return text;
+          }
+
+          var thisLetter = makeid();
+          // document.write(makeid());
+          // var randomLetter = makeid();
+          //document.write("this is the random letter " + makeid());
+
+          //console.log("this lines random letter: " + thisLetter);
+
+
+          // loop thru 10 tries
+          var ctr = 10;
+          console.log(ctr);
+          if ( ctr >= 1) {
+              document.onkeypress = function(x){
+                // after ten tries reset all values
+                if (ctr === 0){
+                  ctr=10;
+                  round=round+1;
+                  wins=0;
+                  losses=0;
+                  guesses=10;
+                  uList="";
+                  cList="";
+
+                }
+
+              // otherwise continue on reg process of counters
+              // and adding strings to the list
+              ctr= ctr-1;
+              var thisLetter=makeid();
+              cList=cList+thisLetter;
+              uList=uList+event.key;
+
+
+              document.getElementById("u").innerHTML=uList;
+              document.getElementById("c").innerHTML=cList;
+              //console.log(uList);
+              //console.log(cList);
+
+              // show the number of guesses left
+              document.getElementById("count").innerHTML=ctr;
+              // show the number of rounds
+              document.getElementById("r").innerHTML=round;
+              console.log("tries left:"+ctr);
+              console.log("round:"+round);
+
+              console.log("user guess:" + uList);
+              console.log("computer guess: " + cList);
+
+
+              if (event.key == thisLetter){
+                wins = wins + 1;
+                document.getElementById("count").innerHTML=ctr;
+                document.getElementById("uG").innerHTML=event.key;
+                document.getElementById("cG").innerHTML=thisLetter;
+                document.getElementById("w").innerHTML=wins;
+                document.getElementById("l").innerHTML=losses;
+                console.log("you guessed: " + event.key);
+                console.log("my character: " + thisLetter);
+
+              } else {
+                losses=losses+1;
+                document.getElementById("count").innerHTML=ctr;
+                document.getElementById("uG").innerHTML=event.key;
+                document.getElementById("cG").innerHTML=thisLetter;
+                document.getElementById("w").innerHTML=wins;
+                document.getElementById("l").innerHTML=losses;
+                console.log("you guessed: " + event.key);
+                console.log("my character: " + thisLetter);
+              }
+          } 
+        } else if(ctr===0) {
+            // if the counter is 10 then we have to reset
+            round=round+1;
+            document.getElementById("r").innerHTML=round;
+            ctr=10;
+          }
+          document.getElementById("u").innerHTML=uList;
+          document.getElementById("c").innerHTML=cList;
+          console.log("user guess:" + uList);
+          console.log("computer guess: " + cList);
+          
+      </script>
+  </body>
+</html>
